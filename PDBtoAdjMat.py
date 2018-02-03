@@ -36,7 +36,7 @@ while (i<len(atno)):
         j=j+1
         d=d+1
     i=i+1
-print (diffmat)
+#print (diffmat)
 map = diffmat < 8.0
 np.savetxt('D:\\maptest.txt', diffmat, delimiter=" ") 
 np.savetxt('D:\\adjmattest.txt', map, delimiter=" ") 
@@ -46,14 +46,14 @@ pylab.matshow(diffmat)
 pylab.colorbar()
 pylab.show()
 
-pylab.hot()
+pylab.hot() 
 pylab.imshow(map)
 pylab.show()
 
-from collections import defaultdict
+import collections
 adjmat = np.genfromtxt("D:\\adjmattest.txt",delimiter=" ")
 a=np.reshape(adjmat,(len(atno),len(atno)))
-graph = defaultdict(list)
+graph = collections.defaultdict(list)
 edges = set()
 
 for i, v in enumerate(a, 1):
@@ -62,17 +62,23 @@ for i, v in enumerate(a, 1):
             edges.add(frozenset([i, j]))
             graph[i].append(j)
 
-def dfs_iterative(graph, start):
-    stack, path = [start], []
+start, dfs = [1], []
+while start:
+    pos = start.pop()
+    if pos in dfs:
+        continue
+    dfs.append(pos)
+    for x in graph[pos]:
+        start.append(x)
+print (dfs)
 
-    while stack:
-        vertex = stack.pop()
-        if vertex in path:
-            continue
-        path.append(vertex)
-        for neighbor in graph[vertex]:
-            stack.append(neighbor)
-
-    return path
-
-print(dfs_iterative(graph, 1))
+#BFS
+start=1
+vis, tovis = set([start]), collections.deque([start])
+while tovis:
+    p = tovis.popleft()
+    print(p)
+    for x in graph[p]:
+        if x not in vis:
+            vis.add(x)
+            tovis.append(x)
