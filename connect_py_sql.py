@@ -33,3 +33,4 @@ for z in open('d:\\human_microbiome_merged\\all_50_seq.txt','r'):
         cursor.execute(insert1)
         connection.commit()
 connection.close()
+
